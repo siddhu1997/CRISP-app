@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import model.Person;
+
 	public class PersonDAOImpl {
 		
 		private Connection getConnection() throws ClassNotFoundException, SQLException
@@ -44,7 +46,7 @@ import java.util.ResourceBundle;
 			st.setString(1, phoneNumber);
 			ResultSet rs=st.executeQuery();
 			
-				Person person=new Person(rs.getString(1),rs.getDate(2),rs.getInt(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7));
+				Person person = new Person(rs.getInt(1),rs.getString(3),rs.getDate(2),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7));
 				
 			return person;
 			
@@ -57,7 +59,7 @@ import java.util.ResourceBundle;
 			List<Person> personList=new ArrayList<>();
 			while(rs.next())
 			{
-				Person person=new Person(rs.getString(1),rs.getDate(2),rs.getInt(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7));
+				Person person = new Person(rs.getInt(1),rs.getString(3),rs.getDate(2),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7));
 				personList.add(person);
 			}
 		
