@@ -18,6 +18,17 @@ public class DonationRequestDAO {
 		Connection con = DriverManager.getConnection(rb.getString("url"),rb.getString("user"),rb.getString("password"));
 		return con;
 	}
+
+	public int addDonationRequest(DonationRequest dr) throws ClassNotFoundException, SQLException {
+		Connection con = getConn();
+		PreparedStatement st = con.prepareStatement("INSERT INTO donation_request(person_id,donor_remarks,admin_remarks,status) VALUES(?,?,?,?)");
+		st.setInt(1, dr.getPersonId());
+		st.setString(2, dr.getDonorRemarks());
+		st.setString(3, dr.getAdminRemarks());
+		st.setString(4,dr.getStatus());	
+		int no=st.executeUpdate();
+		return no;
+	}
 	
 	public List<DonationRequest> readDonationRequest() throws ClassNotFoundException, SQLException{
 		List<DonationRequest> donationRequestsList=new ArrayList<DonationRequest>();
