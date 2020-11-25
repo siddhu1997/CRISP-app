@@ -25,6 +25,17 @@ public class Person {
 		this.password = password;
 	}
 
+	public Person(Integer personId, String name, Date dob, String phoneNumber, String bloodGroup, String location,
+			String password) {
+		this.personId = personId;
+		this.name = name;
+		this.dob = dob;
+		this.phoneNumber = phoneNumber;
+		this.bloodGroup = bloodGroup;
+		this.location = location;
+		this.password = password;
+	}
+
 	//getters and setters 
 	public Integer getPersonId() {
 		return personId;
