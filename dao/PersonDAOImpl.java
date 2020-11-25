@@ -18,11 +18,11 @@ import model.Person;
 		private Connection getConnection() throws ClassNotFoundException, SQLException
 		{
 			ResourceBundle rb = ResourceBundle.getBundle("db");
-			String driver=rb.getString("driver");
+			//String driver=rb.getString("driver");
 			String url=rb.getString("url");
 			String username=rb.getString("username");
 			String password=rb.getString("password");
-			Class.forName(driver);
+			//Class.forName(driver);
 			return DriverManager.getConnection(url,username,password);
 		}
 		
