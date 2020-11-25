@@ -28,14 +28,14 @@ import model.Person;
 		
 		 public int createPerson(Person person) throws ClassNotFoundException, SQLException {
 			 Connection connection=getConnection();
-			 PreparedStatement st=connection.prepareStatement("INSERT INTO person VALUES(?,?,?,?,?,?)");
+			 PreparedStatement st=connection.prepareStatement("INSERT INTO person(name,dob,phone_number,blood_group,location,password) VALUES(?,?,?,?,?,?)");
 			// st.setInt(1, person.getPersonId());
-			 st.setString(2, person.getName());
-			 st.setDate(3, (Date) person.getDob());
-			 st.setString(4, person.getPhoneNumber());
-			 st.setString(5, person.getBloodGroup());
-			 st.setString(6, person.getLocation());
-			 st.setString(7, person.getPassword());
+			 st.setString(1, person.getName());
+			 st.setDate(2, (Date) person.getDob());
+			 st.setString(3, person.getPhoneNumber());
+			 st.setString(4, person.getBloodGroup());
+			 st.setString(5, person.getLocation());
+			 st.setString(6, person.getPassword());
 			 int no=st.executeUpdate();
 			return no;
 		}
