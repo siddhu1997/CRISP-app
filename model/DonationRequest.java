@@ -1,4 +1,4 @@
-
+package model;
 public class DonationRequest {
 	private Integer reqId;
 	private Integer personId;
