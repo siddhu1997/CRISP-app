@@ -1,4 +1,5 @@
-package model;
+package model; 
+
 public class DonationRequest {
 	private Integer reqId;
 	private Integer personId;
@@ -11,8 +12,14 @@ public class DonationRequest {
 	}
 
 	public DonationRequest(Integer reqId, Integer personId, String donorRemarks, String adminRemarks, String status) {
-		super();
 		this.reqId = reqId;
+		this.personId = personId;
+		this.donorRemarks = donorRemarks;
+		this.adminRemarks = adminRemarks;
+		this.status = status;
+	}
+	
+	public DonationRequest(Integer personId, String donorRemarks, String adminRemarks, String status) {
 		this.personId = personId;
 		this.donorRemarks = donorRemarks;
 		this.adminRemarks = adminRemarks;
