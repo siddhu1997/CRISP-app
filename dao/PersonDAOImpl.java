@@ -2,11 +2,12 @@ package dao;
 
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -15,23 +16,23 @@ import model.Person;
 
 	public class PersonDAOImpl {
 		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
 		private Connection getConnection() throws ClassNotFoundException, SQLException
 		{
 			ResourceBundle rb = ResourceBundle.getBundle("db");
-			//String driver=rb.getString("driver");
 			String url=rb.getString("url");
-			String username=rb.getString("username");
+			String username=rb.getString("user");
 			String password=rb.getString("password");
-			//Class.forName(driver);
 			return DriverManager.getConnection(url,username,password);
 		}
 		
+		//tested OK
 		 public int createPerson(Person person) throws ClassNotFoundException, SQLException {
 			 Connection connection=getConnection();
 			 PreparedStatement st=connection.prepareStatement("INSERT INTO person(name,dob,phone_number,blood_group,location,password) VALUES(?,?,?,?,?,?)");
-			// st.setInt(1, person.getPersonId());
 			 st.setString(1, person.getName());
-			 st.setDate(2, (Date) person.getDob());
+			 st.setString(2,sdf.format(person.getDob()));
 			 st.setString(3, person.getPhoneNumber());
 			 st.setString(4, person.getBloodGroup());
 			 st.setString(5, person.getLocation());
@@ -40,66 +41,85 @@ import model.Person;
 			return no;
 		}
 		
-		public Person readPersonByPhoneNumber(String phoneNumber) throws ClassNotFoundException, SQLException {
+		 //tested OK
+		 public Person readPersonById(Integer personId) throws ClassNotFoundException, SQLException, ParseException {
+			 Connection connection=getConnection();
+				
+				PreparedStatement st=connection.prepareStatement("SELECT * FROM person WHERE person_id=?");
+				st.setInt(1, personId);
+				ResultSet rs=st.executeQuery();	
+				Person person = null;
+				
+				while(rs.next()) {
+					person = new Person(rs.getInt(1),rs.getString(2),sdf.parse(rs.getString(3)),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7));
+				}				
+				return person;		
+			}
+	
+		 //tested OK
+		public Person readPersonByPhoneNumber(String phoneNumber) throws ClassNotFoundException, SQLException, ParseException {
 			Connection connection=getConnection();
+			
 			PreparedStatement st=connection.prepareStatement("SELECT * FROM person WHERE phone_number=?");
 			st.setString(1, phoneNumber);
-			ResultSet rs=st.executeQuery();
+			ResultSet rs=st.executeQuery();	
+			Person person = null;
 			
-				Person person = new Person(rs.getInt(1),rs.getString(3),rs.getDate(2),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7));
-				
-			return person;
-			
+			while(rs.next()) {
+				person = new Person(rs.getInt(1),rs.getString(2),sdf.parse(rs.getString(3)),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7));
+			}				
+			return person;		
 		}
 		
-		public List<Person> readPerson() throws ClassNotFoundException, SQLException {
+		//tested OK
+		public List<Person> readPerson() throws ClassNotFoundException, SQLException, ParseException {
+			
 			Connection connection=getConnection();
 			PreparedStatement st=connection.prepareStatement("SELECT * FROM person");
 			ResultSet rs = st.executeQuery();
+			
+			Person person;
 			List<Person> personList=new ArrayList<>();
+			
 			while(rs.next())
 			{
-				Person person = new Person(rs.getInt(1),rs.getString(3),rs.getDate(2),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7));
+				person = new Person(rs.getInt(1),rs.getString(2),sdf.parse(rs.getString(3)),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7));
 				personList.add(person);
 			}
 		
 			return personList;
-			//return null;
 		}
 		
 			
-		
+		//tested OK
 		public int updatePerson(Integer personId, String phoneNumber, String location) throws SQLException, ClassNotFoundException {
+			
 			Connection connection = getConnection();
 			PreparedStatement st = connection.prepareStatement("UPDATE person SET phone_number =?,location=? WHERE person_id =?");
-			st.setString(4,phoneNumber );
-			st.setString(6, location);
-			st.setInt(1, personId);
-
+			st.setString(1,phoneNumber);
+			st.setString(2, location);
+			st.setInt(3, personId);
 			int no=st.executeUpdate();
-			
-			return no;
-			
+			return no;		
 		}
 		
+		//tested OK
 		public int deletePerson(Integer personId) throws SQLException, ClassNotFoundException {
 			Connection connection = getConnection();
 			PreparedStatement st = connection.prepareStatement("DELETE FROM person WHERE person_id=?");
 			st.setInt(1, personId);
-
-			int no=st.executeUpdate();
-			
-			return no;
-			
+			int no=st.executeUpdate();	
+			return no;		
 		}
 		
+		//tested OK
 		public int deletePerson() throws SQLException, ClassNotFoundException {
 			Connection connection = getConnection();
 			PreparedStatement st = connection.prepareStatement("DELETE FROM person");
-			//st.setInt(1, personId);
-
 			int no=st.executeUpdate();
-			
+			st = connection.prepareStatement("ALTER TABLE person AUTO_INCREMENT = 1");
+			Boolean res = st.execute();
+			System.out.println(res);
 			return no;
 		}
 

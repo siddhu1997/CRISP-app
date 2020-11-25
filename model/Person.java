@@ -14,6 +14,10 @@ public class Person {
 	
 	//Constructors
 	public Person() {}
+	
+	public Person(Integer personId) {
+		this.personId = personId;
+	}
 
 	//No need for Person id because person id is auto increment attribute in database.
 	public Person(String name, Date dob, String phoneNumber, String bloodGroup, String location, String password) {
