@@ -5,7 +5,7 @@ import java.util.Date;
 public class TestingHistory {
 
 	private Integer testingId;
-	private Person person;
+	private Integer personId;
 	private String hospital;
 	private Date testingDate;
 	private String result;
@@ -14,9 +14,18 @@ public class TestingHistory {
 	public TestingHistory() {}
 
 	//testingId is an auto increment attribute; no need to initialize
-	public TestingHistory(Person person, String hospital, Date testingDate, String result) {
+	public TestingHistory(Integer personId, String hospital, Date testingDate, String result) {
 		super();
-		this.person = person;
+		this.personId = personId;
+		this.hospital = hospital;
+		this.testingDate = testingDate;
+		this.result = result;
+	}
+
+	public TestingHistory(Integer testingId, Integer personId, String hospital, Date testingDate, String result) {
+		super();
+		this.testingId = testingId;
+		this.personId = personId;
 		this.hospital = hospital;
 		this.testingDate = testingDate;
 		this.result = result;
@@ -31,12 +40,12 @@ public class TestingHistory {
 		this.testingId = testingId;
 	}
 
-	public Person getPerson() {
-		return person;
+	public Integer getPersonId() {
+		return personId;
 	}
 
-	public void setPerson(Person person) {
-		this.person = person;
+	public void setPerson(Integer personId) {
+		this.personId = personId;
 	}
 
 	public String getHospital() {
@@ -65,7 +74,7 @@ public class TestingHistory {
 
 	@Override
 	public String toString() {
-		return "TestingHistory [testingId=" + testingId + ", person=" + person + ", hospital=" + hospital
+		return "TestingHistory [testingId=" + testingId + ", person=" + personId + ", hospital=" + hospital
 				+ ", testingDate=" + testingDate + ", result=" + result + "]";
 	}
 	
