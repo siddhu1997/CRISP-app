@@ -1,25 +1,24 @@
-package model;
 
 public class DonationRequest {
-	
 	private Integer reqId;
-	private Person person;
+	private Integer personId;
 	private String donorRemarks;
 	private String adminRemarks;
 	private String status;
 	
-	//constructor
-	public DonationRequest() {}
+	public DonationRequest() {
+		
+	}
 
-	//reqId is an auto increment attribute; no need to initialize
-	public DonationRequest(Person person, String donorRemarks, String adminRemarks, String status) {
-		this.person = person;
+	public DonationRequest(Integer reqId, Integer personId, String donorRemarks, String adminRemarks, String status) {
+		super();
+		this.reqId = reqId;
+		this.personId = personId;
 		this.donorRemarks = donorRemarks;
 		this.adminRemarks = adminRemarks;
 		this.status = status;
 	}
 
-	//getters and setters
 	public Integer getReqId() {
 		return reqId;
 	}
@@ -28,12 +27,12 @@ public class DonationRequest {
 		this.reqId = reqId;
 	}
 
-	public Person getPerson() {
-		return person;
+	public Integer getPersonId() {
+		return personId;
 	}
 
-	public void setPerson(Person person) {
-		this.person = person;
+	public void setPersonId(Integer personId) {
+		this.personId = personId;
 	}
 
 	public String getDonorRemarks() {
@@ -62,7 +61,7 @@ public class DonationRequest {
 
 	@Override
 	public String toString() {
-		return "DonationRequest [reqId=" + reqId + ", person=" + person + ", donorRemarks=" + donorRemarks
+		return "DonationRequest [reqId=" + reqId + ", personId=" + personId + ", donorRemarks=" + donorRemarks
 				+ ", adminRemarks=" + adminRemarks + ", status=" + status + "]";
 	}
 

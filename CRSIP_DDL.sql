@@ -35,5 +35,5 @@ req_id int PRIMARY KEY AUTO_INCREMENT,
 person_id int,
 donor_remarks varchar(500),
 admin_remarks varchar(500),
-stats varchar(10),
+status varchar(10),
 FOREIGN KEY(person_id) REFERENCES person(person_id));
