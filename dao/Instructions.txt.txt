@@ -1,3 +1,0 @@
-1. Open Web app and navigate to this directory
-2. Click on add files and upload all the files.
-3. Give a proper commit message.

@@ -1,5 +1,7 @@
+com\cts\crisp\DonationRequestController.class
 dao\DonationRequestDAOImpl.class
 MainTestingHistory.class
+com\cts\crisp\TreatmentHistoryController.class
 dao\TreatmentHistoryDAOImpl.class
 model\Person.class
 dao\TestingHistoryDAOImpl.class
@@ -11,3 +13,4 @@ model\DonationRequest.class
 model\TestingHistory.class
 model\TreatmentHistory.class
 MainDonorRequest.class
+com\cts\crisp\TestingHistoryController.class

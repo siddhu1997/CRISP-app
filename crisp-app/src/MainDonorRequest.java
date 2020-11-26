@@ -23,7 +23,7 @@ public class MainDonorRequest{
 	public static void bulkReadPending() throws ClassNotFoundException, SQLException {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Testing updateStatus,readDonationRequestStatus,readDonationRequestStatusById.....");
-		List<DonationRequest> donorList = new DonationRequestDAOImpl().readDonationRequest();
+		List<DonationRequest> donorList = new DonationRequestDAOImpl().readDonationRequest("pending");
 		for(DonationRequest dr:donorList)
 			System.out.println(dr);
 		sc.close();

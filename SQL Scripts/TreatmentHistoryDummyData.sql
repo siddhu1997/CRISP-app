@@ -1,7 +1,7 @@
 #drop database crisp;
 #delete from treatment_history;
 
-UPDATE treatment_history SET admission_date ='2020-10-11',treatment_details='Updated... 'WHERE person_id=9;
+#UPDATE treatment_history SET admission_date ='2020-10-11',treatment_details='Updated... 'WHERE person_id=9;
 
 select * from treatment_history;
 

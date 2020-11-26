@@ -32,10 +32,10 @@ public class DonationRequestDAOImpl {
 	}
 
 	//tested OK
-	public List<DonationRequest> readDonationRequest() throws ClassNotFoundException, SQLException{
+	public List<DonationRequest> readDonationRequest(String statusString) throws ClassNotFoundException, SQLException{
 		List<DonationRequest> donationRequestsList=new ArrayList<DonationRequest>();
 		Connection con = getConn();
-		String statusString="pending";
+		//String statusString="pending";
 		PreparedStatement st = con.prepareStatement("SELECT * FROM donation_request WHERE status=?");
 		st.setString(1,statusString);
 		ResultSet rs = st.executeQuery();

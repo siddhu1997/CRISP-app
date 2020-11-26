@@ -95,11 +95,14 @@ public class MainTreatmentHistory {
 	}
 	public static void main(String[] args) throws ClassNotFoundException, SQLException, ParseException {
 
-		bulkRead();
+		//bulkRead();
 		//read();
 		//update();
 		//delete();
 		//empty();
+		System.out.println("Testing create...");
+		int r = new TreatmentHistoryDAOImpl().createTreatmentHistory(8,sdf.parse("2020-10-10"));
+		System.out.println(r);
 	}
 
 }

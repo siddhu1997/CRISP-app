@@ -25,6 +25,16 @@ public class TreatmentHistoryDAOImpl {
 		Connection con = DriverManager.getConnection(rb.getString("url"),rb.getString("user"),rb.getString("password"));
 		return con;
 	}
+	
+	//tested OK
+	public Integer createTreatmentHistory(Integer personId,Date admissionDate) throws SQLException, ClassNotFoundException {
+		Connection con = getConn();
+		PreparedStatement st = con.prepareStatement("INSERT INTO treatment_history VALUES(?,'Patient infected with COVID-19',?,null,null)");
+		st.setInt(1, personId);
+		st.setString(2,sdf.format(admissionDate));
+		Integer result = st.executeUpdate();
+		return result;
+	}
 
 	//tested OK
 	public List<TreatmentHistory> readTreatmentHistory() throws ClassNotFoundException, SQLException, ParseException

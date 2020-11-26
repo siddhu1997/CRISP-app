@@ -23,7 +23,7 @@ public class PersonController {
 
 	//read all - tested
 	@GET
-	@Path("/")
+	@Path("/")  
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Person> readPerson() throws ClassNotFoundException, SQLException, ParseException {
 		return personDAO.readPerson();
@@ -53,7 +53,7 @@ public class PersonController {
 		return personDAO.createPerson(person);
 	}
 	
-	//update a record - 
+	//update a record - tested
 	@PUT
 	@Path("/update/")
     @Produces(MediaType.APPLICATION_JSON)

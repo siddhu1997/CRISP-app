@@ -1,7 +1,7 @@
 #drop database crisp;
 #delete from donation_request;
 #alter table donation_request auto_increment = 1;
-#select * from donation_request;
+select * from donation_request;
 
 INSERT INTO donation_request(person_id,donor_remarks,admin_remarks,status) VALUES(1,'Please accept me','','pending');
 INSERT INTO donation_request(person_id,donor_remarks,admin_remarks,status) VALUES(2,'Please accept me','','pending');
