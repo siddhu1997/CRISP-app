@@ -1,0 +1,129 @@
+API END-POINTS
+==============
+
+General Mappings:
+
+1. Create a new record - POST method
+2. Read a record(s) - GET method
+3. Update a record - PUT method
+4. Delete a record - DELETE
+
+Person
+======
+1. http://localhost:8080/crisp-app/rest/person/ - reads all person data from database - GET
+2. http://localhost:8080/crisp-app/rest/person/{personId} - retrieves person information from database - GET
+3. http://localhost:8080/crisp-app/rest/person/phonenumber/{phoneNumber} - retrieves person information from database based on phone - GET
+
+4. http://localhost:8080/crisp-app/rest/person/createperson - creates a new Person in database - POST
+
+Body:
+{
+	"name":"Johnny",
+	"dob":"1997-01-17",
+	"phoneNumber":"1234567890",
+	"bloodGroup":"A-ve",
+	"location":"Kozhikode",
+	"password":"abrakadabara"
+}
+
+5. http://localhost:8080/crisp-app/rest/person/update - updates a record in the database - PUT
+
+Body:
+{
+	"personId":11,
+	"phoneNumber":"9526630353",
+	"location":"Hyderabad"
+}
+
+6. http://localhost:8080/crisp-app/rest/person/delete/{personId} - deletes a particular record - DELETE
+
+
+DonationRequest
+===============
+1. http://localhost:8080/crisp-app/rest/donationrequest/status/{statusString} - read all pending requests by pending or approved or rejected - GET
+2. http://localhost:8080/crisp-app/rest/donationrequest/person/{personId} - read statuses by person id - GET
+3. http://localhost:8080/crisp-app/rest/donationrequest/request/{requestId} - read status by request id - GET
+
+4. http://localhost:8080/crisp-app/rest/donationrequest/update - update status and admin remarks of a particular req_id - PUT
+
+Body:
+{
+	"reqId":2,
+	"personId":1,
+	"adminRemarks":"Eligible",
+	"status":"approved"
+}
+
+5. http://localhost:8080/crisp-app/rest/donationrequest/delete/{requestId} - delete donation request by request id
+6. http://localhost:8080/crisp-app/rest/donationrequest/createdonationrequest - create a new request - POST
+
+Body:
+{
+	"personId":1,
+	"donorRemarks":"Lorem Ipsum",
+	"adminRemarks":"",
+	"status":"pending"
+}
+
+TestingHistory
+==============
+1. http://localhost:8080/crisp-app/rest/testinghistory/createtestinghistory - create a new record; pass personId and admission date only - POST
+
+Body:
+{
+	"personId":1,
+	"hospital":"Lakseshore",
+	"testingDate":"2020-10-10",
+	"result":"positive"
+}
+
+2. http://localhost:8080/crisp-app/rest/testinghistory/{testingId} - read testing history by testingId - GET
+3. http://localhost:8080/crisp-app/rest/testinghistory/person - read all records - GET
+4. http://localhost:8080/crisp-app/rest/testinghistory/person/{personId} - read testing history of a particular person - GET
+5. http://localhost:8080/crisp-app/rest/testinghistory/update - update testing history. testing date and result is changed using this end-point - PUT
+
+Body:
+{
+	"testingId":,
+	"personId":3,
+	"testingDate":"2020-11-11",
+	"result":"negative"
+}
+
+6. http://localhost:8080/crisp-app/rest/testinghistory/delete/{testingId} - delete a particular testing history (by testing id) - DELETE
+
+TreatmentHistory
+================
+1. http://localhost:8080/crisp-app/rest/treatmenthistory/createtreatmenthistory - create a record; supply only personId and admissiondate rest are null - POST
+
+Body:
+{
+	"personId":8,
+	"admissionDate":"2020-05-01"
+}
+
+2. http://localhost:8080/crisp-app/rest/treatmenthistory/ - read all - GET
+3. http://localhost:8080/crisp-app/rest/treatmenthistory/{personId} - read testing history of a particular person - GET
+4. http://localhost:8080/crisp-app/rest/treatmenthistory/updateadmission - update testing history. testing date and result is changed using this end-point - PUT
+
+Body:
+{
+	"personId":8,
+	"admissionDate":"2020-09-12"
+}
+
+5. http://localhost:8080/crisp-app/rest/treatmenthistory/updaterecovered - update testing history. testing date and result is changed using this end-point - PUT
+
+{
+	"personId":8,
+	"recoveredDate":"2020-09-12"
+}
+
+6. http://localhost:8080/crisp-app/rest/treatmenthistory/updatedeath - update testing history. testing date and result is changed using this end-point - PUT
+
+{
+	"personId":8,
+	"deathDate":"2020-09-12"
+}
+
+6. http://localhost:8080/crisp-app/rest/treatmenthistory/delete/{personId} - delete a record by personId - DELETE
