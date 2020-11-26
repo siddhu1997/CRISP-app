@@ -3,7 +3,7 @@ package model;
 import java.util.Date;
 
 public class TreatmentHistory {
-	private Person person;
+	private Integer personId;
 	private String treatmentDetails;
 	private Date admissionDate;
 	private Date recoveredDate;
@@ -12,9 +12,8 @@ public class TreatmentHistory {
 	//Constructors
 	public TreatmentHistory() {}
 
-	public TreatmentHistory(Person person, String treatmentDetails, Date admissionDate, Date recoveredDate,
-			Date deathDate) {
-		this.person = person;
+	public TreatmentHistory(Integer personId, String treatmentDetails, Date admissionDate, Date recoveredDate,Date deathDate) {
+		this.personId = personId;
 		this.treatmentDetails = treatmentDetails;
 		this.admissionDate = admissionDate;
 		this.recoveredDate = recoveredDate;
@@ -22,12 +21,12 @@ public class TreatmentHistory {
 	}
 
 	//getters & setters
-	public Person getPerson() {
-		return person;
+	public Integer getPersonId() {
+		return personId;
 	}
 
-	public void setPerson(Person person) {
-		this.person = person;
+	public void setPersonId(Integer personId) {
+		this.personId = personId;
 	}
 
 	public String getTreatmentDetails() {
@@ -64,7 +63,7 @@ public class TreatmentHistory {
 
 	@Override
 	public String toString() {
-		return "TreatmentHistory [person=" + person + ", treatmentDetails=" + treatmentDetails + ", admissionDate="
+		return "TreatmentHistory [personId=" + personId + ", treatmentDetails=" + treatmentDetails + ", admissionDate="
 				+ admissionDate + ", recoveredDate=" + recoveredDate + ", deathDate=" + deathDate + "]";
 	}
 	
