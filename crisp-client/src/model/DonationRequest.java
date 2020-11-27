@@ -19,6 +19,14 @@ public class DonationRequest {
 		this.status = status;
 	}
 	
+	public DonationRequest(Integer reqId, Integer personId, String adminRemarks, String status) {
+		super();
+		this.reqId = reqId;
+		this.personId = personId;
+		this.adminRemarks = adminRemarks;
+		this.status = status;
+	}
+
 	public DonationRequest(Integer personId, String donorRemarks, String adminRemarks, String status) {
 		this.personId = personId;
 		this.donorRemarks = donorRemarks;

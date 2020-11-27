@@ -1,20 +1,19 @@
-package model;
+package modelTemp;
 
-import java.util.Date;
 
-public class TestingHistory {
+public class TestingHistoryTemp {
 
 	private Integer testingId;
 	private Integer personId;
 	private String hospital;
-	private Date testingDate;
+	private long testingDate;
 	private String result;
 	
 	//Constructors
-	public TestingHistory() {}
+	public TestingHistoryTemp() {}
 
 	//testingId is an auto increment attribute; no need to initialize
-	public TestingHistory(Integer personId, String hospital, Date testingDate, String result) {
+	public TestingHistoryTemp(Integer personId, String hospital, long testingDate, String result) {
 		super();
 		this.personId = personId;
 		this.hospital = hospital;
@@ -22,15 +21,7 @@ public class TestingHistory {
 		this.result = result;
 	}
 
-	public TestingHistory(Integer testingId, Integer personId, Date testingDate, String result) {
-		super();
-		this.testingId = testingId;
-		this.personId = personId;
-		this.testingDate = testingDate;
-		this.result = result;
-	}
-
-	public TestingHistory(Integer testingId, Integer personId, String hospital, Date testingDate, String result) {
+	public TestingHistoryTemp(Integer testingId, Integer personId, String hospital, long testingDate, String result) {
 		super();
 		this.testingId = testingId;
 		this.personId = personId;
@@ -64,11 +55,11 @@ public class TestingHistory {
 		this.hospital = hospital;
 	}
 
-	public Date getTestingDate() {
+	public long getTestingDate() {
 		return testingDate;
 	}
 
-	public void setTestingDate(Date testingDate) {
+	public void setTestingDate(long testingDate) {
 		this.testingDate = testingDate;
 	}
 

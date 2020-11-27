@@ -8,9 +8,40 @@ public class TreatmentHistory {
 	private Date admissionDate;
 	private Date recoveredDate;
 	private Date deathDate;
-	
+
 	//Constructors
 	public TreatmentHistory() {}
+
+
+
+	public TreatmentHistory(String treatmentDetails, Integer personId, Date recoveredDate) {
+		this.treatmentDetails = treatmentDetails;
+		this.personId = personId;
+		this.recoveredDate = recoveredDate;
+	}
+
+
+
+	public TreatmentHistory(Integer personId, Date deathDate, String treatmentDetails) {
+		this.personId = personId;
+		this.deathDate = deathDate;
+		this.treatmentDetails = treatmentDetails;
+	}
+
+
+
+	public TreatmentHistory(Integer personId, Date admissionDate) {
+		this.personId = personId;
+		this.admissionDate = admissionDate;
+	}
+
+	public TreatmentHistory(Integer personId, String treatmentDetails, Date admissionDate) {
+		this.personId = personId;
+		this.treatmentDetails = treatmentDetails;
+		this.admissionDate = admissionDate;
+	}
+
+
 
 	public TreatmentHistory(Integer personId, String treatmentDetails, Date admissionDate, Date recoveredDate,Date deathDate) {
 		this.personId = personId;
@@ -66,6 +97,6 @@ public class TreatmentHistory {
 		return "TreatmentHistory [personId=" + personId + ", treatmentDetails=" + treatmentDetails + ", admissionDate="
 				+ admissionDate + ", recoveredDate=" + recoveredDate + ", deathDate=" + deathDate + "]";
 	}
-	
+
 	//Use Comparator if comparing becomes necessary
 }
