@@ -88,7 +88,7 @@ public class TreatmentHistoryClient {
 	//update death date
 	//http://localhost:8080/crisp-app/rest/treatmenthistory/updatedeath
 	public Integer updateDeathDate(TreatmentHistory th) throws IOException {
-		String operation = "treatmenthistory/updaterdeath";
+		String operation = "treatmenthistory/updatedeath";
 		String body = String.format("{"
 				+ "\"personId\":%d,"
 				+ "\"treatmentDetails\":\"%s\","
