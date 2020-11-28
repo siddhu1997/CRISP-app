@@ -38,7 +38,14 @@ import model.Person;
 			 st.setString(4, person.getBloodGroup());
 			 st.setString(5, person.getLocation());
 			 st.setString(6, person.getPassword());
-			 int no=st.executeUpdate();
+			 int no=0;
+			 try {
+				 no = st.executeUpdate();
+			 }catch(Exception e) {
+				 
+			 }
+			 if(no == 0)
+				 return 0;
 			return no;
 		}
 		
@@ -53,7 +60,10 @@ import model.Person;
 				
 				while(rs.next()) {
 					person = new Person(rs.getInt(1),rs.getString(2),sdf.parse(rs.getString(3)),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7));
-				}				
+				}
+				if(person == null) {
+					return new Person();
+				}
 				return person;		
 			}
 	
@@ -68,7 +78,10 @@ import model.Person;
 			
 			while(rs.next()) {
 				person = new Person(rs.getInt(1),rs.getString(2),sdf.parse(rs.getString(3)),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7));
-			}				
+			}	
+			if(person == null) {
+				return new Person();
+			}
 			return person;		
 		}
 		
@@ -84,8 +97,10 @@ import model.Person;
 			
 			while(rs.next())
 			{
+				person = null;
 				person = new Person(rs.getInt(1),rs.getString(2),sdf.parse(rs.getString(3)),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7));
-				personList.add(person);
+				if(person != null)
+					personList.add(person);
 			}
 		
 			return personList;
@@ -100,7 +115,14 @@ import model.Person;
 			st.setString(1,phoneNumber);
 			st.setString(2, location);
 			st.setInt(3, personId);
-			int no=st.executeUpdate();
+			int no=0;
+			 try {
+				 no = st.executeUpdate();
+			 }catch(Exception e) {
+				 
+			 }
+			 if(no == 0)
+				 return 0;
 			return no;		
 		}
 		
@@ -109,8 +131,15 @@ import model.Person;
 			Connection connection = getConnection();
 			PreparedStatement st = connection.prepareStatement("DELETE FROM person WHERE person_id=?");
 			st.setInt(1, personId);
-			int no=st.executeUpdate();	
-			return no;		
+			int no=0;
+			 try {
+				 no = st.executeUpdate();
+			 }catch(Exception e) {
+				 
+			 }
+			 if(no == 0)
+				 return 0;
+			return no;	
 		}
 		
 		//tested OK

@@ -10,6 +10,7 @@ MainPerson.class
 dao\PersonDAOImpl.class
 MainTreatmentHistory.class
 model\DonationRequest.class
+com\cts\crisp\CustomDateDeserializer.class
 model\TestingHistory.class
 model\TreatmentHistory.class
 MainDonorRequest.class

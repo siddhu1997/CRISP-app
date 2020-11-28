@@ -35,11 +35,15 @@ public class TestingHistoryDAOImpl {
 		ps.setString(2, hospital);
 		ps.setString(3, sdf.format(testingDate));
 		ps.setString(4, result);	
-
-		int i=ps.executeUpdate();
-
-		//returning number rows updated
-		return i;
+		int no=0;
+		 try {
+			 no = ps.executeUpdate();
+		 }catch(Exception e) {
+			 
+		 }
+		 if(no == 0)
+			 return 0;
+		return no;
 
 	}
 
@@ -62,7 +66,8 @@ public class TestingHistoryDAOImpl {
 			String testingDate = res.getString(4);
 			String result=res.getString(5);
 			TestingHistory test=new TestingHistory(testingId,personId1,hospital,sdf.parse(testingDate),result);
-			list_test_history.add(test);
+			if(test != null)
+				list_test_history.add(test);
 		}
 		return list_test_history;
 	}
@@ -87,6 +92,8 @@ public class TestingHistoryDAOImpl {
 			String result=res.getString(5);
 			test=new TestingHistory(testingId1,personId1,hospital,sdf.parse(testingDate),result);
 		}
+		if(test == null)
+			return new TestingHistory();
 		return test;
 	}
 
@@ -127,9 +134,16 @@ public class TestingHistoryDAOImpl {
 		ps.setInt(3, personId);
 		ps.setInt(4, testingId);
 
-		//executing prepared statement	
-		int stat=ps.executeUpdate();
-		return stat;
+		int no=0;
+		 try {
+			 no = ps.executeUpdate();
+		 }catch(Exception e) {
+			 
+		 }
+		 if(no == 0)
+			 return 0;
+		return no;
+
 	}
 	//tested OK
 	public int deleteTestingHistory(Integer testingId) throws ClassNotFoundException, SQLException {
@@ -139,8 +153,17 @@ public class TestingHistoryDAOImpl {
 		//deleting testing history based on testingId
 		PreparedStatement ps=con.prepareStatement("DELETE from testing_history WHERE testing_id=?;");
 		ps.setInt(1, testingId);
-		int stat=ps.executeUpdate();
-		return stat; 
+		
+		int no=0;
+		 try {
+			 no = ps.executeUpdate();
+		 }catch(Exception e) {
+			 
+		 }
+		 if(no == 0)
+			 return 0;
+		return no;
+
 	}
 
 	//tested OK

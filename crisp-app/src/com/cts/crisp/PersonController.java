@@ -20,7 +20,6 @@ import model.Person;
 public class PersonController {
 	
 	PersonDAOImpl personDAO = new PersonDAOImpl();
-
 	//read all - tested
 	@GET
 	@Path("/")  

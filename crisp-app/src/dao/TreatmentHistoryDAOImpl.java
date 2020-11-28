@@ -32,7 +32,10 @@ public class TreatmentHistoryDAOImpl {
 		PreparedStatement st = con.prepareStatement("INSERT INTO treatment_history VALUES(?,'Patient infected with COVID-19',?,null,null)");
 		st.setInt(1, personId);
 		st.setString(2,sdf.format(admissionDate));
-		Integer result = st.executeUpdate();
+		Integer result = 0;
+		result = st.executeUpdate();
+		if(result == 0)
+			return 0;
 		return result;
 	}
 
@@ -47,10 +50,12 @@ public class TreatmentHistoryDAOImpl {
 		ResultSet rs = st.executeQuery();	
 		while(rs.next())
 		{
+			treathistory = null;
 			treathistory=new TreatmentHistory(rs.getInt(1),rs.getString(2), rs.getString(3) == null? null:sdf.parse(rs.getString(3)),
 					rs.getString(4) == null ? null:sdf.parse(rs.getString(4)),
 							rs.getString(5) == null ? null:sdf.parse(rs.getString(5)));
-			treatmentHistoryList.add(treathistory);
+			if(treathistory != null)
+				treatmentHistoryList.add(treathistory);
 		}
 		return treatmentHistoryList;
 	}
@@ -68,6 +73,8 @@ public class TreatmentHistoryDAOImpl {
 					rs.getString(4) == null ? null:sdf.parse(rs.getString(4)),
 							rs.getString(5) == null ? null:sdf.parse(rs.getString(5)));
 		}
+		if(treatment == null)
+			return new TreatmentHistory();
 		return treatment;
 	}
 
@@ -78,7 +85,10 @@ public class TreatmentHistoryDAOImpl {
 		st.setInt(3, personId);
 		st.setString(2, treatmentDetails);
 		st.setString(1, sdf.format(admissionDate));
-		Integer result = st.executeUpdate();
+		Integer result = 0;
+		result = st.executeUpdate();
+		if(result == 0)
+			return 0;
 		return result;
 	}
 
@@ -90,8 +100,11 @@ public class TreatmentHistoryDAOImpl {
 		st.setInt(3,personId);
 		st.setString(2, treatmentDetails);
 		st.setString(1,recoveredDate == null ?null:sdf.format(recoveredDate));
-		int num=st.executeUpdate();
-		return num;
+		Integer result = 0;
+		result = st.executeUpdate();
+		if(result == 0)
+			return 0;
+		return result;
 	}
 
 	//tested OK
@@ -102,8 +115,11 @@ public class TreatmentHistoryDAOImpl {
 		st.setInt(3,personId);
 		st.setString(2, treatmentDetails);
 		st.setString(1,deathDate == null ?null:sdf.format(deathDate));
-		int num=st.executeUpdate();
-		return num;
+		Integer result = 0;
+		result = st.executeUpdate();
+		if(result == 0)
+			return 0;
+		return result;
 
 	}
 
@@ -113,15 +129,21 @@ public class TreatmentHistoryDAOImpl {
 		Connection con = getConn();
 		PreparedStatement st = con.prepareStatement("DELETE FROM treatment_history WHERE person_id=?");
 		st.setInt(1,personId);
-		int num=st.executeUpdate();
-		return num;
+		Integer result = 0;
+		result = st.executeUpdate();
+		if(result == 0)
+			return 0;
+		return result;
 	}
 	//tested OK
 	public int deleteTreatmentHistory() throws ClassNotFoundException, SQLException
 	{
 		Connection con = getConn();
 		PreparedStatement st = con.prepareStatement("DELETE FROM treatment_history");
-		int num=st.executeUpdate();
-		return num;
+		Integer result = 0;
+		result = st.executeUpdate();
+		if(result == 0)
+			return 0;
+		return result;
 	}
 }

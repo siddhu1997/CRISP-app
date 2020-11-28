@@ -27,7 +27,14 @@ public class DonationRequestDAOImpl {
 		st.setString(2, dr.getDonorRemarks());
 		st.setString(3, dr.getAdminRemarks());
 		st.setString(4,dr.getStatus());	
-		int no=st.executeUpdate();
+		int no=0;
+		 try {
+			 no = st.executeUpdate();
+		 }catch(Exception e) {
+			 
+		 }
+		 if(no == 0)
+			 return 0;
 		return no;
 	}
 
@@ -42,8 +49,10 @@ public class DonationRequestDAOImpl {
 		DonationRequest dr=null;
 		while(rs.next())
 		{
+			dr = null;
 			dr=new DonationRequest(rs.getInt(1),rs.getInt(2), rs.getString(3),rs.getString(4),rs.getString(5));
-			donationRequestsList.add(dr);
+			if(dr != null)
+				donationRequestsList.add(dr);
 		}
 		return donationRequestsList;
 
@@ -58,9 +67,11 @@ public class DonationRequestDAOImpl {
 		st.setInt(1, personId);
 		ResultSet rs = st.executeQuery();
 		while(rs.next()) {
+			result = null;
 			result = new DonationRequest(rs.getInt(1),rs.getInt(2),rs.getString(3),rs.getString(4),rs.getString(5));
-			System.out.println(result);
-			donationRequestList.add(result);
+			//System.out.println(result);
+			if(result != null)
+				donationRequestList.add(result);
 		}
 		return donationRequestList;
 	}
@@ -75,6 +86,8 @@ public class DonationRequestDAOImpl {
 		if (rs.next()) {
 			result = new DonationRequest(rs.getInt(1),rs.getInt(2),rs.getString(3),rs.getString(4),rs.getString(5));
 		}
+		if(result == null)
+			return new DonationRequest();
 		return result;
 	}
 
@@ -86,8 +99,15 @@ public class DonationRequestDAOImpl {
 		st.setString(2, adminRemarks);
 		st.setInt(3,personId);
 		st.setInt(4,requestId);
-		int num=st.executeUpdate();
-		return num;
+		int no=0;
+		 try {
+			 no = st.executeUpdate();
+		 }catch(Exception e) {
+			 
+		 }
+		 if(no == 0)
+			 return 0;
+		return no;
 	}
 
 	//tested OK
@@ -95,8 +115,15 @@ public class DonationRequestDAOImpl {
 		Connection con = getConn();
 		PreparedStatement st = con.prepareStatement("DELETE FROM donation_request WHERE req_id=?");
 		st.setInt(1,requestId);
-		int num=st.executeUpdate();
-		return num;
+		int no=0;
+		 try {
+			 no = st.executeUpdate();
+		 }catch(Exception e) {
+			 
+		 }
+		 if(no == 0)
+			 return 0;
+		return no;
 	}
 
 	//tested OK

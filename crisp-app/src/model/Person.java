@@ -2,10 +2,15 @@ package model;
 
 import java.util.Date;
 
+import com.cts.crisp.CustomDateDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+
 public class Person {
 
 	private Integer personId;
 	private String name;
+	@JsonDeserialize(using=CustomDateDeserializer.class)
 	private Date dob;
 	private String phoneNumber;
 	private String bloodGroup;
@@ -57,10 +62,12 @@ public class Person {
 		this.name = name;
 	}
 
+	@JsonDeserialize(using=CustomDateDeserializer.class)
 	public Date getDob() {
 		return dob;
 	}
 
+	@JsonDeserialize(using=CustomDateDeserializer.class)
 	public void setDob(Date dob) {
 		this.dob = dob;
 	}
