@@ -74,6 +74,10 @@ public class MainDonationRequest {
 		System.out.println(r+" row(s) affected.");
 		sc.close();
 	}
+	/**
+	 * @param args
+	 * @throws IOException
+	 */
 	public static void main(String[] args) throws IOException {
 
 		//readStatus();

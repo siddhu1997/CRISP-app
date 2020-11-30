@@ -117,8 +117,6 @@ public class Person {
 		
 		//Two persons are equal if they have same name, blood group, dob and phoneNumber
 		return this.getName().equals(person.getName()) &&
-			   this.getBloodGroup().equals(person.getBloodGroup()) &&
-			   this.getDob().equals(person.getDob()) &&
 			   this.getPhoneNumber().equals(person.getPhoneNumber());
 	}
 	
