@@ -15,8 +15,10 @@ import model.Person;
 import service.PersonClient;
 
 public class UserStoryFour {
+	
 	static PersonClient p = new PersonClient();
-
+	static Scanner sc=new Scanner(System.in);
+	
 	public static void userRegistration() throws ParseException, IOException {
 		
 		String name;
@@ -26,7 +28,7 @@ public class UserStoryFour {
 		String location;
 		String password;
 		
-		Scanner sc=new Scanner(System.in);
+		
 		System.out.println("Enter the following details:");
 		System.out.println("Enter your name:");
 		name = sc.nextLine();
@@ -58,8 +60,7 @@ public class UserStoryFour {
 		if(r != 0)
 			System.out.println("Your account has been created. Please login with your new account.");
 		else
-			System.out.println("Uh ho! We encountered an error while creating your account. Please try again later.");
-		sc.close();
+			System.out.println("Exisiting User found! Please login...");
 	}
 
 	public static void main(String args[]) throws ClassNotFoundException, SQLException, ParseException

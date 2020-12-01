@@ -76,11 +76,11 @@ public class TreatmentHistoryClient {
 	//http://localhost:8080/crisp-app/rest/treatmenthistory/updaterecovered
 	public Integer updateRecoveredDate(TreatmentHistory th) throws IOException {
 		String operation = "treatmenthistory/updaterecovered";
-		String body = String.format("{"
-				+ "\"personId\":%d,"
-				+ "\"treatmentDetails\":\"%s\","
-				+ "\"recoveredDate\":\"%s\""
-				+ "}", th.getPersonId(),th.getTreatmentDetails(),sdf.format(th.getRecoveredDate()));
+		String body = "{"
+				+ "\"personId\":"+th.getPersonId()+","
+				+ "\"treatmentDetails\":\""+th.getTreatmentDetails()+"\","
+				+ "\"recoveredDate\":"+(th.getRecoveredDate()==null?null:"\""+sdf.format(th.getRecoveredDate())+"\"")+""
+				+ "}";
 		String output = ConnectMeToWeb.dmlClient(body,operation,"PUT");
 		return Integer.parseInt(output);
 	}

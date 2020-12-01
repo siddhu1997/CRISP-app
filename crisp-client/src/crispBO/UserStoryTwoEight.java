@@ -46,7 +46,10 @@ public class UserStoryTwoEight {
 				String comment;
 				DonationRequest dn = null;
 				
-				System.out.format("%-3s %-20s %-10s %-100s\n","ID","Name","Location","Donor Remarks");
+				if(donationList.size()==0)
+					System.out.println("No pending Donations...");
+				else
+					System.out.format("%-3s %-20s %-10s %-100s\n","ID","Name","Location","Donor Remarks");
 				
 				for(DonationRequest d:donationList) {
 					
@@ -58,7 +61,7 @@ public class UserStoryTwoEight {
 					accept = sc.nextLine();
 					
 					if(accept.equalsIgnoreCase("y"))
-						dn.setStatus("accepted");
+						dn.setStatus("approved");
 					else if(accept.equalsIgnoreCase("n"))
 						dn.setStatus("rejected");
 					else if(accept.equalsIgnoreCase("p"))
@@ -98,27 +101,21 @@ public class UserStoryTwoEight {
 			switch(choice) {
 			case 1:
 			{
-				System.out.println("Getting count of all the Lists....");
+				System.out.println("Getting count of all the Lists....\n");
 				List<TreatmentHistory> thList1 = thc.readTreatmentHistory();
 				List<TreatmentHistory> patientList = thList1.stream().filter((a)->a.getRecoveredDate()==null&&a.getDeathDate()==null).collect(Collectors.toList());
-				List<TreatmentHistory> recoveredList = thList1.stream().filter((a)->a.getDeathDate()==null).collect(Collectors.toList());
+				List<TreatmentHistory> recoveredList = thList1.stream().filter((a)->a.getDeathDate()==null&&a.getRecoveredDate()!=null).collect(Collectors.toList());
 				List<TreatmentHistory> deathList = thList1.stream().filter((a)->a.getTreatmentDetails().equalsIgnoreCase("Died from COVID-19")).collect(Collectors.toList());
 				System.out.println("No of Infected persons till date: "+patientList.size());
 				System.out.println("No of Recovered people till date: "+recoveredList.size());
 				System.out.println("No of people who died from COVID-19 till date: "+deathList.size()+"\n");
 				break;
 			}
-			case 2:
-				statistics(2);
-				break;
-			case 3:
-				statistics(3);
-				break;
-			case 4:
-				statistics(4);
+			default:
+				statistics(choice);
 				break;
 			}
-		}while(choice != 5);
+		}while(choice != 6);
 	}
 	
 	public static void statistics(Integer choice) throws IOException, ParseException {
@@ -233,11 +230,12 @@ public class UserStoryTwoEight {
 			if(boolLoc.equals("y") && boolDate.equals("y")){
 				for(TreatmentHistory th:thList) {
 					for(Person person:pList) {
-						if(person.getPersonId() == th.getPersonId() && person.getLocation().equals(location) && th.getRecoveredDate().equals(d) && th.getDeathDate() == null) {
-							count++;
-							//id,name,location,date
-							System.out.format("%-3d %-20s %-10s %-10s\n",person.getPersonId(),person.getName(),person.getLocation(),sdf.format(th.getRecoveredDate()));
-							break;
+						if(person.getPersonId() == th.getPersonId() && person.getLocation().equals(location) && th.getRecoveredDate()!= null && th.getDeathDate() == null ) {
+							if(th.getRecoveredDate().equals(d)) {
+								count++;
+								System.out.format("%-3d %-20s %-10s %-10s\n",person.getPersonId(),person.getName(),person.getLocation(),sdf.format(th.getRecoveredDate()));
+								break;
+							}		
 						}
 					}
 				}
@@ -247,7 +245,7 @@ public class UserStoryTwoEight {
 			else if(boolLoc.equals("y") && boolDate.equals("n")) {
 				for(TreatmentHistory th:thList) {
 					for(Person person:pList) {
-						if(person.getPersonId() == th.getPersonId() && person.getLocation().equals(location) && th.getDeathDate() == null) {
+						if(person.getPersonId() == th.getPersonId() && person.getLocation().equals(location) && th.getDeathDate() == null && th.getRecoveredDate()!=null) {
 							count++;
 							//id,name,location,date
 							System.out.format("%-3d %-20s %-10s %-10s\n",person.getPersonId(),person.getName(),person.getLocation(),sdf.format(th.getRecoveredDate()));
@@ -260,11 +258,13 @@ public class UserStoryTwoEight {
 			else if(boolLoc.equals("n") && boolDate.equals("y")){
 				for(TreatmentHistory th:thList) {
 					for(Person person:pList) {
-						if(person.getPersonId() == th.getPersonId() && th.getRecoveredDate().equals(d)  && th.getDeathDate() == null) {
-							count++;
-							//id,name,location,date
-							System.out.format("%-3d %-20s %-10s %-10s\n",person.getPersonId(),person.getName(),person.getLocation(),sdf.format(th.getRecoveredDate()));
-							break;
+						if(person.getPersonId() == th.getPersonId() && th.getDeathDate() == null && th.getRecoveredDate()!=null) {							
+							if(th.getRecoveredDate().equals(d)) {
+								count++;
+								//id,name,location,date
+								System.out.format("%-3d %-20s %-10s %-10s\n",person.getPersonId(),person.getName(),person.getLocation(),sdf.format(th.getRecoveredDate()));
+								break;
+							}
 						}
 					}
 				}
@@ -372,9 +372,14 @@ public class UserStoryTwoEight {
 		case 5:
 		{
 			System.out.println("Donor Statistics:");
-			System.out.format("%-5s %-20s %-20s\n","P.ID","Name","Location");
 			DonationClient dc1 = new DonationClient();
 			List<DonationRequest> list = dc1.readDonationRequest("approved");
+			if(list.size()==0) {
+				System.out.println("No Donors available at the moment.");
+				break;
+			}			
+			else
+				System.out.format("%-5s %-20s %-20s\n","P.ID","Name","Location");			
 			List<Person> pList = pc.readPerson();
 			for(DonationRequest r:list) {
 				for(Person p:pList) {

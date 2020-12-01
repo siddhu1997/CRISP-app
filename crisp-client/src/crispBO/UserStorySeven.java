@@ -21,22 +21,20 @@ public class UserStorySeven{
 	
 	static TestingHistoryClient tc = new TestingHistoryClient();
 	static DonationClient dc = new DonationClient();
+	static Scanner sc = new Scanner(System.in);
 	
 	public static void createDonationRequest(Person personFetched) throws ClassNotFoundException, SQLException, ParseException, IOException {
 		
 		Integer personId = personFetched.getPersonId();
 		
-		Scanner sc = new Scanner(System.in);
+		
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 
 		System.out.println("Enter Donor remarks:");
 		String donorRemarks = sc.nextLine();
-		
-		
-		
+	
 		int num = 0;
-		
-		//System.out.println("Adding Donor request....");
+
 		List<TestingHistory> testList = tc.readTestingHistoryByPersonId(personId);
 		
 		for(int i=0;i<testList.size();i++)
@@ -90,20 +88,21 @@ public class UserStorySeven{
 			}
 
 		}
-		sc.close();
 	}
 	
-	public static void viewStatus() throws ClassNotFoundException, SQLException, IOException {
-		Scanner sc=new Scanner(System.in);
-		System.out.println("Enter Person Id:");
-		Integer personId = Integer.parseInt(sc.nextLine());
+	public static void viewStatus(Person personFetched) throws ClassNotFoundException, SQLException, IOException {
+		Integer personId = personFetched.getPersonId();
 		List<DonationRequest> donations = dc.readDonationRequestStatusByPerson(personId);
 		System.out.println("Request History:");
-		System.out.format("%-5s %-10s\n","ReqID","Status");
+		if(donations.size()==0) {
+			System.out.println("No History found");
+		}
+		else
+			System.out.format("%-5s %-10s\n","ReqID","Status");
 		for(DonationRequest d: donations)
 			System.out.format("%-5d %-10s\n",d.getReqId(),d.getStatus());
-		sc.close();
 	}
+	
 	public static void main(String[] args) throws ClassNotFoundException, SQLException, ParseException, IOException {
 /*	
 		Scanner sc=new Scanner(System.in);

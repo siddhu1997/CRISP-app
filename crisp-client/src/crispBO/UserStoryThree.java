@@ -15,18 +15,17 @@ import service.TreatmentHistoryClient;
 
 public class UserStoryThree {
 
+	static Scanner scanner = new Scanner(System.in);
 	public static void updateTreatementHistory() throws ClassNotFoundException, SQLException, ParseException, IOException {
 		
-		int choice = 0;
-		Scanner scanner = new Scanner(System.in);
+		int choice = 4;
+		
 		TreatmentHistoryClient t = new TreatmentHistoryClient();
 		SimpleDateFormat dFormat = new SimpleDateFormat("yyyy-MM-dd");
 
 		do {
 			
-			// if admin press 6th option
 			Menu.updateTreatmentHistoryMenu();
-			System.out.println("Enter choice");
 			choice = scanner.nextInt();
 			
 			switch (choice) {
@@ -122,16 +121,12 @@ public class UserStoryThree {
 				
 				break;
 			}
-			case 4:
-				break;
-
+			
 			default:
-				//throw new IllegalArgumentException("Unexpected value: " + choice + "enter correct choice");
-				break;
 			}
 
-		} while (choice <= 3);
-		scanner.close();
+		} while (choice != 4);
+		//scanner.close();
 	}
 	
 	public static void main(String[] args) throws ClassNotFoundException, SQLException, ParseException, IOException {

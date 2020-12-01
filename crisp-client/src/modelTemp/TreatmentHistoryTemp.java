@@ -36,6 +36,8 @@ public class TreatmentHistoryTemp {
 	}
 
 	public Long getAdmissionDate() {
+		if(admissionDate == null)
+			return 1L;
 		return admissionDate;
 	}
 
