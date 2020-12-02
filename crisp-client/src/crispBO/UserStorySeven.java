@@ -49,7 +49,7 @@ public class UserStorySeven{
 		
 		if((testList.size() < 3) || (num < 1))
 		{ 
-			dnr=new DonationRequest(personId, donorRemarks,"Not Eligible","Rejected");
+			dnr=new DonationRequest(personId, donorRemarks,"Not Eligible. ","Rejected");
 			System.out.println("Not Eligible");
 			int donorReq = dc.addDonationRequest(dnr);
 			if(donorReq == 1)
@@ -98,9 +98,9 @@ public class UserStorySeven{
 			System.out.println("No History found");
 		}
 		else
-			System.out.format("%-5s %-10s\n","ReqID","Status");
+			System.out.format("%-5s %-10s %-25s\n","ReqID","Status","Admin Remarks");
 		for(DonationRequest d: donations)
-			System.out.format("%-5d %-10s\n",d.getReqId(),d.getStatus());
+			System.out.format("%-5d %-10s %-25s\n",d.getReqId(),d.getStatus(),d.getAdminRemarks());
 	}
 	
 	public static void main(String[] args) throws ClassNotFoundException, SQLException, ParseException, IOException {

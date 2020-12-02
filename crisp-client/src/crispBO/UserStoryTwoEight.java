@@ -6,9 +6,12 @@ package crispBO;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import menuOptions.Menu;
@@ -25,6 +28,7 @@ public class UserStoryTwoEight {
 	static PersonClient pc = new PersonClient();
 	static TreatmentHistoryClient thc = new TreatmentHistoryClient();
 	final static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); 
+	
 	
 	public static void adminManage() throws IOException, ParseException {
 		
@@ -119,6 +123,15 @@ public class UserStoryTwoEight {
 	}
 	
 	public static void statistics(Integer choice) throws IOException, ParseException {
+		
+		ArrayList<String> validLocations = new ArrayList<>();
+		validLocations.add("bangalore");
+		validLocations.add("chennai");
+		validLocations.add("delhi");
+		validLocations.add("kochi");
+		String dateRegex = "([1-9]{1}[0-9]{3})-([0-1][0-9])-([0-3][0-9])";
+		Pattern datep = Pattern.compile(dateRegex);
+		Matcher matcher;
 		sc = new Scanner(System.in);
 		switch(choice) {
 		case 2:
@@ -128,18 +141,33 @@ public class UserStoryTwoEight {
 			String boolDate="n",date="";
 			Date d = new Date();
 			
-			System.out.println("Do you want to filter by Location?(y/n)");
+			System.out.println("Do you want to filter by Location?(y/n) You will prompted to enter the Location in the next Step.");
 			boolLoc = sc.nextLine();
 			if(boolLoc.equalsIgnoreCase("y")) {
 				System.out.println("Enter Location:");
-				location = sc.nextLine();
+				while(true){
+					location = sc.nextLine();
+					if(validLocations.contains(location.toLowerCase()) == false) {
+						System.out.println("Enter a valid Location (Bangalore|Chennai|Delhi|Kochi):");	
+					}
+					else
+						break;
+				}
 			}
-			System.out.println("Do you want to filter by Date?(y/n)");
+			System.out.println("Do you want to filter by Date?(y/n) You will be prompted to enter the Date in the next Step.");
 			boolDate = sc.nextLine();
 			if(boolDate.equalsIgnoreCase("y")) {
 				System.out.println("Enter Date:");
-				date = sc.nextLine();
-				 d = sdf.parse(date);
+				while(true){
+					date = sc.nextLine();
+					matcher = datep.matcher(date);
+					if(matcher.matches() == false) {
+						System.out.println("Enter a valid Date (Format:YYYY-MM-DD):");	
+					}
+					else
+						break;
+				}
+				d = sdf.parse(date);
 			}
 			
 			System.out.println("Fetching data...");
@@ -148,9 +176,11 @@ public class UserStoryTwoEight {
 			Integer count = 0;
 			//both
 			if(boolLoc.equals("y") && boolDate.equals("y")){
+				System.out.println("Location Filter: Active (Location:"+location.toUpperCase()+")\tDate Filter: Active (Date: "+date+")");
+				System.out.format("\n%-3s %-20s %-10s %-10s\n","ID","Name","Location","Date");
 				for(TreatmentHistory th:thList) {
 					for(Person person:pList) {
-						if(person.getPersonId() == th.getPersonId() && person.getLocation().equals(location) && th.getAdmissionDate().equals(d) && th.getRecoveredDate() == null && th.getDeathDate() == null) {
+						if(person.getPersonId() == th.getPersonId() && person.getLocation().equalsIgnoreCase(location) && th.getAdmissionDate().equals(d) && th.getRecoveredDate() == null && th.getDeathDate() == null) {
 							count++;
 							//id,name,location,date
 							System.out.format("%-3d %-20s %-10s %-10s\n",person.getPersonId(),person.getName(),person.getLocation(),sdf.format(th.getAdmissionDate()));
@@ -162,9 +192,11 @@ public class UserStoryTwoEight {
 			}
 			//location only
 			else if(boolLoc.equals("y") && boolDate.equals("n")) {
+				System.out.println("Location Filter: Active (Location:"+location.toUpperCase()+")\tDate Filter: Inactive");
+				System.out.format("\n%-3s %-20s %-10s %-10s\n","ID","Name","Location","Date");
 				for(TreatmentHistory th:thList) {
 					for(Person person:pList) {
-						if(person.getPersonId() == th.getPersonId() && person.getLocation().equals(location) && th.getRecoveredDate() == null && th.getDeathDate() == null) {
+						if(person.getPersonId() == th.getPersonId() && person.getLocation().equalsIgnoreCase(location) && th.getRecoveredDate() == null && th.getDeathDate() == null) {
 							count++;
 							//id,name,location,date
 							System.out.format("%-3d %-20s %-10s %-10s\n",person.getPersonId(),person.getName(),person.getLocation(),sdf.format(th.getAdmissionDate()));
@@ -175,6 +207,8 @@ public class UserStoryTwoEight {
 			}
 			//date only
 			else if(boolLoc.equals("n") && boolDate.equals("y")){
+				System.out.println("Location Filter: Inactive\tDate Filter: Active (Date: "+date+")");
+				System.out.format("\n%-3s %-20s %-10s %-10s\n","ID","Name","Location","Date");
 				for(TreatmentHistory th:thList) {
 					for(Person person:pList) {
 						if(person.getPersonId() == th.getPersonId() && th.getAdmissionDate().equals(d) && th.getRecoveredDate() == null && th.getDeathDate() == null) {
@@ -188,6 +222,8 @@ public class UserStoryTwoEight {
 			}
 			//un-filtered
 			else {
+				System.out.println("Location Filter: Inactive\tDate Filter: Inactive");
+				System.out.format("\n%-3s %-20s %-10s %-10s\n","ID","Name","Location","Date");
 				for(TreatmentHistory th:thList) {
 					for(Person person:pList) {
 						if(person.getPersonId() == th.getPersonId() && th.getRecoveredDate() == null && th.getDeathDate() == null) {
@@ -208,18 +244,33 @@ public class UserStoryTwoEight {
 			String boolDate="n",date="";
 			Date d = new Date();
 			
-			System.out.println("Do you want to filter by Location?(y/n)");
+			System.out.println("Do you want to filter by Location?(y/n) You will prompted to enter the Location in the next Step.");
 			boolLoc = sc.nextLine();
 			if(boolLoc.equalsIgnoreCase("y")) {
 				System.out.println("Enter Location:");
-				location = sc.nextLine();
+				while(true){
+					location = sc.nextLine();
+					if(validLocations.contains(location.toLowerCase()) == false) {
+						System.out.println("Enter a valid Location (Bangalore|Chennai|Delhi|Kochi):");	
+					}
+					else
+						break;
+				}
 			}
-			System.out.println("Do you want to filter by Date?(y/n)");
+			System.out.println("Do you want to filter by Date?(y/n) You will prompted to enter a date in the next step.");
 			boolDate = sc.nextLine();
 			if(boolDate.equalsIgnoreCase("y")) {
 				System.out.println("Enter Date:");
-				date = sc.nextLine();
-				 d = sdf.parse(date);
+				while(true){
+					date = sc.nextLine();
+					matcher = datep.matcher(date);
+					if(matcher.matches() == false) {
+						System.out.println("Enter a valid Date (Format:YYYY-MM-DD):");	
+					}
+					else
+						break;
+				}
+				d = sdf.parse(date);
 			}
 			
 			System.out.println("Fetching data...");
@@ -228,9 +279,11 @@ public class UserStoryTwoEight {
 			Integer count = 0;
 			//both
 			if(boolLoc.equals("y") && boolDate.equals("y")){
+				System.out.println("Location Filter: Active (Location:"+location.toUpperCase()+")\tDate Filter: Active (Date: "+date+")");
+				System.out.format("\n%-3s %-20s %-10s %-10s\n","ID","Name","Location","Date");
 				for(TreatmentHistory th:thList) {
 					for(Person person:pList) {
-						if(person.getPersonId() == th.getPersonId() && person.getLocation().equals(location) && th.getRecoveredDate()!= null && th.getDeathDate() == null ) {
+						if(person.getPersonId() == th.getPersonId() && person.getLocation().equalsIgnoreCase(location) && th.getRecoveredDate()!= null && th.getDeathDate() == null ) {
 							if(th.getRecoveredDate().equals(d)) {
 								count++;
 								System.out.format("%-3d %-20s %-10s %-10s\n",person.getPersonId(),person.getName(),person.getLocation(),sdf.format(th.getRecoveredDate()));
@@ -243,9 +296,11 @@ public class UserStoryTwoEight {
 			}
 			//location only
 			else if(boolLoc.equals("y") && boolDate.equals("n")) {
+				System.out.println("Location Filter: Active (Location:"+location.toUpperCase()+")\tDate Filter: Inactive");
+				System.out.format("\n%-3s %-20s %-10s %-10s\n","ID","Name","Location","Date");
 				for(TreatmentHistory th:thList) {
 					for(Person person:pList) {
-						if(person.getPersonId() == th.getPersonId() && person.getLocation().equals(location) && th.getDeathDate() == null && th.getRecoveredDate()!=null) {
+						if(person.getPersonId() == th.getPersonId() && person.getLocation().equalsIgnoreCase(location) && th.getDeathDate() == null && th.getRecoveredDate()!=null) {
 							count++;
 							//id,name,location,date
 							System.out.format("%-3d %-20s %-10s %-10s\n",person.getPersonId(),person.getName(),person.getLocation(),sdf.format(th.getRecoveredDate()));
@@ -256,6 +311,8 @@ public class UserStoryTwoEight {
 			}
 			//date only
 			else if(boolLoc.equals("n") && boolDate.equals("y")){
+				System.out.println("Location Filter: Inactive\tDate Filter: Active (Date: "+date+")");
+				System.out.format("\n%-3s %-20s %-10s %-10s\n","ID","Name","Location","Date");
 				for(TreatmentHistory th:thList) {
 					for(Person person:pList) {
 						if(person.getPersonId() == th.getPersonId() && th.getDeathDate() == null && th.getRecoveredDate()!=null) {							
@@ -271,6 +328,8 @@ public class UserStoryTwoEight {
 			}
 			//un-filtered
 			else {
+				System.out.println("Location Filter: Inactive\tDate Filter: Inactive");
+				System.out.format("\n%-3s %-20s %-10s %-10s\n","ID","Name","Location","Date");
 				for(TreatmentHistory th:thList) {
 					for(Person person:pList) {
 						if(person.getPersonId() == th.getPersonId() && th.getRecoveredDate() != null && th.getDeathDate() == null) {
@@ -292,18 +351,33 @@ public class UserStoryTwoEight {
 			String boolDate="n",date="";
 			Date d = new Date();
 			
-			System.out.println("Do you want to filter by Location?(y/n)");
+			System.out.println("Do you want to filter by Location?(y/n) You will prompted to enter the Location in the next Step.");
 			boolLoc = sc.nextLine();
 			if(boolLoc.equalsIgnoreCase("y")) {
 				System.out.println("Enter Location:");
-				location = sc.nextLine();
+				while(true){
+					location = sc.nextLine();
+					if(validLocations.contains(location.toLowerCase()) == false) {
+						System.out.println("Enter a valid Location (Bangalore|Chennai|Delhi|Kochi):");	
+					}
+					else
+						break;
+				}
 			}
-			System.out.println("Do you want to filter by Date?(y/n)");
+			System.out.println("Do you want to filter by Date?(y/n) You will be prompted to enter date in next step.");
 			boolDate = sc.nextLine();
 			if(boolDate.equalsIgnoreCase("y")) {
 				System.out.println("Enter Date:");
-				date = sc.nextLine();
-				 d = sdf.parse(date);
+				while(true){
+					date = sc.nextLine();
+					matcher = datep.matcher(date);
+					if(matcher.matches() == false) {
+						System.out.println("Enter a valid Date (Format:YYYY-MM-DD):");	
+					}
+					else
+						break;
+				}
+				d = sdf.parse(date);
 			}
 			
 			System.out.println("Fetching data...");
@@ -314,6 +388,8 @@ public class UserStoryTwoEight {
 			Integer count = 0;
 			//both
 			if(boolLoc.equals("y") && boolDate.equals("y")){
+				System.out.println("Location Filter: Active (Location:"+location.toUpperCase()+")\tDate Filter: Active (Date: "+date+")");
+				System.out.format("\n%-3s %-20s %-10s %-10s\n","ID","Name","Location","Date");
 				for(TreatmentHistory th1:thList) {
 					for(Person person1: pList) {
 						if(person1.getPersonId() == th1.getPersonId() && person1.getLocation().equals(location) && th1.getDeathDate().equals(d)) {
@@ -328,6 +404,8 @@ public class UserStoryTwoEight {
 			}
 			//location only
 			else if(boolLoc.equals("y") && boolDate.equals("n")) {
+				System.out.println("Location Filter: Active (Location:"+location.toUpperCase()+")\tDate Filter: Inactive");
+				System.out.format("\n%-3s %-20s %-10s %-10s\n","ID","Name","Location","Date");
 				for(TreatmentHistory th1:thList) {
 					for(Person person1:pList) {
 						if(person1.getPersonId() == th1.getPersonId() && person1.getLocation().equals(location)){
@@ -341,6 +419,8 @@ public class UserStoryTwoEight {
 			}
 			//date only
 			else if(boolLoc.equals("n") && boolDate.equals("y")){
+				System.out.println("Location Filter: Inactive\tDate Filter: Active (Date: "+date+")");
+				System.out.format("\n%-3s %-20s %-10s %-10s\n","ID","Name","Location","Date");
 				for(TreatmentHistory th1:thList) {
 					for(Person person1:pList) {
 						if(person1.getPersonId() == th1.getPersonId() && th1.getDeathDate().equals(d)) {
@@ -354,6 +434,8 @@ public class UserStoryTwoEight {
 			}
 			//un-filtered
 			else {
+				System.out.println("Location Filter: Inactive\tDate Filter: Inactive");
+				System.out.format("\n%-3s %-20s %-10s %-10s\n","ID","Name","Location","Date");
 				for(TreatmentHistory th1:thList) {
 					for(Person person1:pList) {
 						if(person1.getPersonId() == th1.getPersonId()) {
@@ -379,12 +461,12 @@ public class UserStoryTwoEight {
 				break;
 			}			
 			else
-				System.out.format("%-5s %-20s %-20s\n","P.ID","Name","Location");			
+				System.out.format("%-5s %-20s %-20s %-6s\n","P.ID","Name","Location","Blood Group");			
 			List<Person> pList = pc.readPerson();
 			for(DonationRequest r:list) {
 				for(Person p:pList) {
 					if(p.getPersonId().equals(r.getPersonId())) {
-						System.out.format("%-5d %-20s %-20s\n",r.getPersonId(),p.getName(),p.getLocation());
+						System.out.format("%-5d %-20s %-20s %-6s\n",r.getPersonId(),p.getName(),p.getLocation(),p.getBloodGroup());
 						break;
 					}
 				}

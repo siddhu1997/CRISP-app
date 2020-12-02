@@ -10,6 +10,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import model.Person;
 import model.TestingHistory;
@@ -38,10 +40,20 @@ public class UserStoryOneFiveSix{
 	public static Person userLoginValidation() throws IOException {
 
 		sc = new Scanner(System.in);
+		String phoneRegex = "[6789]{1}[0-9]{9}";
+		Pattern numberp = Pattern.compile(phoneRegex);
+		Matcher matcher;
 		System.out.println("Enter your Phone Number (Provided at the time of Registration):");
-		String phone=sc.nextLine();
-		if(phone.equals(""))
-			phone=sc.nextLine();
+		String phone;
+		while(true){
+			phone = sc.nextLine();
+			matcher = numberp.matcher(phone);
+			if(matcher.matches() == false) {
+				System.out.println("Enter a valid Phone Number (10 digits, starts with with 6,7,8 or 9; Do not add +91):");	
+			}
+			else
+				break;
+		}
 		System.out.println("Enter the password");
 		String pwd=sc.nextLine();
 		if(pwd.equals(""))
@@ -62,19 +74,41 @@ public class UserStoryOneFiveSix{
 			personFetched.setPersonId(null);
 		}
 		else
-			System.out.println("\t\tWelcome to your dashboard "+personFetched.getName());
+			System.out.println("***********************************************Welcome to your Dashboard:"+personFetched.getName()+"***********************************************");
 		return personFetched;
 	}
 
 	public static void userTestingHistory(Person personFetched) throws IOException, ParseException {
 		sc = new Scanner(System.in);
+		String dateRegex = "([1-9]{1}[0-9]{3})-([0-1][0-9])-([0-3][0-9])";
+		Pattern datep = Pattern.compile(dateRegex);
+		Matcher matcher;
 		System.out.println("Enter Test details:");
 		System.out.println("Enter the Hospital name where you conducted the Test:");
 		String hospital = sc.nextLine();
 		System.out.println("Enter the Testing Date (Format: YYYY-MM-DD):");
-		Date testingDate=sdf.parse(sc.nextLine());
+		String date = "";
+		while(true){
+			date = sc.nextLine();
+			matcher = datep.matcher(date);
+			if(matcher.matches() == false) {
+				System.out.println("Enter a valid Test Date (Format:YYYY-MM-DD):");	
+			}
+			else
+				break;
+		}
+		Date testingDate=sdf.parse(date);
 		System.out.println("Enter the Test Result:");
-		String result = sc.nextLine();
+		String result = "";
+		while(true){
+			result = sc.nextLine();
+			if(result.equalsIgnoreCase("positive") == false || result.equalsIgnoreCase("negative")) {
+				System.out.println("Enter a valid Test Result ( Positive|Negative ):");	
+			}
+			else
+				break;
+		}
+		
 
 		int personId = personFetched.getPersonId();	
 		TestingHistory test = new TestingHistory(personId, hospital, testingDate, result);
