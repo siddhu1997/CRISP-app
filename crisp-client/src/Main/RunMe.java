@@ -22,21 +22,21 @@ public class RunMe {
 	public static void main(String[] args) throws IOException, ParseException, ClassNotFoundException, SQLException {
 
 		//Assigning all choices to exit by default;
-		Integer choice1 = 3; 
-		Integer choice2 = 3;
-		Integer choice3 = 3;
-		Integer choice4 = 4;
-		Integer choice5 = 3;
-
+		String choice1 = "3"; 
+		String choice2 = "3";
+		String choice3 = "3";
+		String choice4 = "4";
+		String choice5 = "3";
+		
+		System.out.println("Welcome to CRISP App! For any queries or details to be modified, write to: admin@crisp.com");
 		do {
-
 			//Print 1st Menu options
 			Menu.mainMenu();
-			choice1 = Integer.parseInt(sc.nextLine());
+			choice1 = sc.nextLine();
 
 			switch(choice1) {
 			//Admin Story- Case 1
-			case 1:
+			case "1":
 				//admin
 				System.out.println("Enter Administrator username:");
 				String username = sc.nextLine();
@@ -48,64 +48,64 @@ public class RunMe {
 
 						Menu.adminOptionMainMenu();
 						sc = new  Scanner(System.in);
-						choice2 = Integer.parseInt(sc.nextLine());
+						choice2 = sc.nextLine();
 						switch(choice2) {
-						case 1:
+						case "1":
 							UserStoryTwoEight.adminManage();
 							break;
-						case 2:
+						case "2":
 							UserStoryThree.updateTreatementHistory();
 							break;
 						default:
 							break;
 						}
 
-					}while(choice2 != 3);					
+					}while(choice2.equals("3")==false);					
 				}				
 				break;
 				//User Story - Case 2
-			case 2:
+			case "2":
 
 				Menu.userMainMenu();
-				choice3 = Integer.parseInt(sc.nextLine());
+				choice3 = sc.nextLine();
 
 				switch(choice3) {
-				case 1:
+				case "1":
 					UserStoryFour.userRegistration();
 					break;
-				case 2:
+				case "2":
 					Person personFetched = UserStoryOneFiveSix.userLoginValidation();
 					if(personFetched.getPersonId()!=null) {
 						do {
 							Menu.userPostLoginMenu();
-							choice4 = Integer.parseInt(sc.nextLine());
+							choice4 = sc.nextLine();
 							switch(choice4) {
-							case 1:
+							case "1":
 								UserStoryOneFiveSix.userTestingHistory(personFetched);
 								break;
-							case 2:
+							case "2":
 								do {
 									Menu.userDonorMenu();
-									choice5 = Integer.parseInt(sc.nextLine());
+									choice5 = sc.nextLine();
 									switch(choice5) {
-									case 1:
+									case "1":
 										UserStorySeven.createDonationRequest(personFetched);
 										break;
-									case 2:
+									case "2":
 										UserStorySeven.viewStatus(personFetched);
 										break;
 									default:
 										break;
 									}
-								}while(choice5 != 3);
+								}while(choice5.equals("3")==false);
 								break;
-							case 3:
+							case "3":
 								UserStoryTwoEight.userStatistics();
 								break;
 							default:
 								break;
 							}
-						}while(choice4 != 4);
+						}while(choice4.equals("4")==false);
 					}
 					break;
 				}
@@ -115,7 +115,7 @@ public class RunMe {
 				break;
 			}
 
-		}while(choice1 != 3);
+		}while(choice1.equals("3")==false);
 		
 		sc.close();
 	}

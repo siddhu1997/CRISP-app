@@ -26,7 +26,7 @@ public class UserStoryThree {
 	static Scanner scanner = new Scanner(System.in);
 	public static void updateTreatementHistory() throws ClassNotFoundException, SQLException, ParseException, IOException {
 		
-		int choice = 4;
+		String choice = "4";
 		
 		TreatmentHistoryClient t = new TreatmentHistoryClient();
 		PersonClient pc = new PersonClient();
@@ -43,9 +43,9 @@ public class UserStoryThree {
 		do {
 			
 			Menu.updateTreatmentHistoryMenu();
-			choice = Integer.parseInt(scanner.nextLine());	
+			choice = scanner.nextLine();	
 			switch (choice) {
-			case 1: 
+			case "1": 
 			{
 				System.out.println("Enter Person ID:");
 				String pid = "";
@@ -104,7 +104,7 @@ public class UserStoryThree {
 				break;
 			}
 			
-			case 2:
+			case "2":
 			{
 				System.out.println("Enter Person ID:");
 				String pid = "";
@@ -162,7 +162,7 @@ public class UserStoryThree {
 				break;
 			}
 
-			case 3:
+			case "3":
 			{
 				scanner = new Scanner(System.in);
 				System.out.println("Enter Person ID:");
@@ -238,7 +238,7 @@ public class UserStoryThree {
 			default:
 			}
 
-		} while (choice != 4);
+		} while (choice.equals("4")==false);
 		//scanner.close();
 	}
 	

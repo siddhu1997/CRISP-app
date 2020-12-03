@@ -32,14 +32,14 @@ public class UserStoryTwoEight {
 	
 	public static void adminManage() throws IOException, ParseException {
 		
-		Integer option = 6;
+		String option = "6";
 		do {
 			
 			Menu.adminOptionsMenu();
 			sc = new Scanner(System.in);
-			option = Integer.parseInt(sc.nextLine());
+			option = sc.nextLine();
 			switch(option) {
-			case 1:
+			case "1":
 				//allowing admin to see all the pending request first.
 				System.out.println("Fetching pending requests....");
 				DonationClient dc = new DonationClient();
@@ -88,22 +88,32 @@ public class UserStoryTwoEight {
 					
 				}	
 				break;
+			case "2":
+				statistics(2);
+				break;
+			case "3":
+				statistics(3);
+				break;
+			case "4":
+				statistics(4);
+				break;
+			case "5":
+				statistics(5);
 			default:
-				statistics(option);
-
+				break;
 			}	
 		
-		}while(option != 6);
+		}while(option.equals("6")==false);
 	}
 	
 	public static void userStatistics() throws IOException, ParseException {
 		sc = new Scanner(System.in);
-		Integer choice;
+		String choice;
 		do {
 			Menu.userStatisticsMenu();
-			choice = Integer.parseInt(sc.nextLine());
+			choice = sc.nextLine();
 			switch(choice) {
-			case 1:
+			case "1":
 			{
 				System.out.println("Getting count of all the Lists....\n");
 				List<TreatmentHistory> thList1 = thc.readTreatmentHistory();
@@ -115,11 +125,21 @@ public class UserStoryTwoEight {
 				System.out.println("No of people who died from COVID-19 till date: "+deathList.size()+"\n");
 				break;
 			}
+			case "2":
+				statistics(2);
+				break;
+			case "3":
+				statistics(3);
+				break;
+			case "4":
+				statistics(4);
+				break;
+			case "5":
+				statistics(5);
 			default:
-				statistics(choice);
 				break;
 			}
-		}while(choice != 6);
+		}while(choice.equals("6")==false);
 	}
 	
 	public static void statistics(Integer choice) throws IOException, ParseException {
@@ -460,19 +480,51 @@ public class UserStoryTwoEight {
 				System.out.println("No Donors available at the moment.");
 				break;
 			}			
-			else
-				System.out.format("%-5s %-20s %-20s %-6s\n","P.ID","Name","Location","Blood Group");			
-			List<Person> pList = pc.readPerson();
-			for(DonationRequest r:list) {
-				for(Person p:pList) {
-					if(p.getPersonId().equals(r.getPersonId())) {
-						System.out.format("%-5d %-20s %-20s %-6s\n",r.getPersonId(),p.getName(),p.getLocation(),p.getBloodGroup());
-						break;
+			else {			
+				List<Person> pList = pc.readPerson();
+				System.out.println("Do you want to apply a Location filter?(y/n) You will be prompted to enter the location in next step.");
+				String confirm = sc.nextLine();
+				String loc = "";
+				if(confirm.equalsIgnoreCase("y")) {
+					System.out.println("Enter the location: ");	
+					while(true){
+						loc = sc.nextLine();
+						if(loc.equals("") == true || validLocations.contains(loc.toLowerCase()) == false) {
+							System.out.println("Enter a valid Location (Bangalore|Chennai|Delhi|Kochi):");	
+						}
+						else {
+							break;
+						}
 					}
 				}
-				
-			}
-			System.out.println("Total Count: "+list.size()+"\n");
+				if(confirm.equalsIgnoreCase("y")) {
+					System.out.println("Location filter: Active (Location: "+loc+")");
+					System.out.format("%-5s %-20s %-20s %-6s\n","P.ID","Name","Location","Blood Group");
+					for(DonationRequest r:list) {
+						for(Person p:pList) {
+							if(p.getPersonId().equals(r.getPersonId()) == true && p.getLocation().equalsIgnoreCase(loc) == true) {
+								System.out.format("%-5d %-20s %-20s %-6s\n",r.getPersonId(),p.getName(),p.getLocation(),p.getBloodGroup());
+								break;
+							}
+						}
+						
+					}
+				}
+				else {
+					System.out.println("Location filter: Inactive");
+					System.out.format("%-5s %-20s %-20s %-6s\n","P.ID","Name","Location","Blood Group");
+					for(DonationRequest r:list) {
+						for(Person p:pList) {
+							if(p.getPersonId().equals(r.getPersonId())) {
+								System.out.format("%-5d %-20s %-20s %-6s\n",r.getPersonId(),p.getName(),p.getLocation(),p.getBloodGroup());
+								break;
+							}
+						}
+						
+					}
+				}		
+				System.out.println("Total Count: "+list.size()+"\n");
+			}		
 			break;
 		}		
 		case 6:

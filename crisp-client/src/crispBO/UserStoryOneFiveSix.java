@@ -12,12 +12,16 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.ArrayList;
 
+import model.DonationRequest;
 import model.Person;
 import model.TestingHistory;
 import model.TreatmentHistory;
 import service.TestingHistoryClient;
 import service.TreatmentHistoryClient;
+import service.DonationClient;
 import service.PersonClient;
 
 public class UserStoryOneFiveSix{
@@ -74,18 +78,34 @@ public class UserStoryOneFiveSix{
 			personFetched.setPersonId(null);
 		}
 		else
-			System.out.println("***********************************************Welcome to your Dashboard:"+personFetched.getName()+"***********************************************");
+			System.out.println("*********************************************** Welcome to your Dashboard:"+personFetched.getName()+" ***********************************************");
 		return personFetched;
 	}
 
 	public static void userTestingHistory(Person personFetched) throws IOException, ParseException {
 		sc = new Scanner(System.in);
+		ArrayList<String> resultList = new ArrayList<String>();
+		resultList.add("positive");
+		resultList.add("negative");
 		String dateRegex = "([1-9]{1}[0-9]{3})-([0-1][0-9])-([0-3][0-9])";
 		Pattern datep = Pattern.compile(dateRegex);
 		Matcher matcher;
+		
+		String hospital = "",result="";
+		int personId = personFetched.getPersonId();	
+
+		List<TestingHistory> testList = testconsumer.readTestingHistoryByPersonId(personId);
+		if(testList.size()!=0) {
+			System.out.println("Previous Testing History and their Results:");
+			System.out.format("%-5s %-10s %-10s %-10s\n","ID","HOSPITAL","DATE","RESULT");
+			for(TestingHistory t1:testList) {
+				System.out.format("%-5d %-10s %-10s %-10s\n",t1.getTestingId(),t1.getHospital(),sdf.format(t1.getTestingDate()),t1.getResult().toUpperCase());
+			}
+		}
+		
 		System.out.println("Enter Test details:");
 		System.out.println("Enter the Hospital name where you conducted the Test:");
-		String hospital = sc.nextLine();
+		hospital = sc.nextLine();
 		System.out.println("Enter the Testing Date (Format: YYYY-MM-DD):");
 		String date = "";
 		while(true){
@@ -99,21 +119,17 @@ public class UserStoryOneFiveSix{
 		}
 		Date testingDate=sdf.parse(date);
 		System.out.println("Enter the Test Result:");
-		String result = "";
+		result = "";
 		while(true){
 			result = sc.nextLine();
-			if(result.equalsIgnoreCase("positive") == false || result.equalsIgnoreCase("negative")) {
-				System.out.println("Enter a valid Test Result ( Positive|Negative ):");	
+			if(resultList.contains(result.toLowerCase())==false) {
+				System.out.println("Enter a valid Test Result (Positive|Negative):");	
 			}
 			else
 				break;
 		}
 		
-
-		int personId = personFetched.getPersonId();	
 		TestingHistory test = new TestingHistory(personId, hospital, testingDate, result);
-
-		List<TestingHistory> testList = testconsumer.readTestingHistoryByPersonId(personId);
 
 		//checking conflicts of results for the same date.
 		Boolean conflict = false;
@@ -131,8 +147,8 @@ public class UserStoryOneFiveSix{
 		if(conflict) {
 			System.out.println("Uh oh! The Test record you gave us has a conflict with a previous record. Please ensure to input valid data.\n");
 			System.out.println("Previous Result:");
-			System.out.println("Testing ID: "+conflictRecord.getTestingId()+" Testing Date: "+sdf.format(conflictRecord.getTestingDate()+"\n")
-			+"Result: "+conflictRecord.getResult());
+			System.out.println("Testing ID: "+conflictRecord.getTestingId()+" Testing Date: "+sdf.format(conflictRecord.getTestingDate())+"\n"
+			+"Result: "+conflictRecord.getResult().toUpperCase());
 		}
 
 		else {
@@ -179,6 +195,14 @@ public class UserStoryOneFiveSix{
 						System.out.println("Your Treatment History has also been updated.\n");
 					else
 						System.out.println("Uh-oh! An unexpected error has occured while updating your treatment history.");
+					//if user was a donor, remove him
+					DonationClient dc = new DonationClient();
+					List<DonationRequest> dList1 = dc.readDonationRequest("approved");
+					List<DonationRequest> dList2 = dList1.stream().filter((a)->a.getPersonId().equals(personId)).collect(Collectors.toList());
+					for(DonationRequest d1:dList2) {
+						//System.out.println(d1);
+						dc.deleteDonationRequest(d1.getReqId());
+					}
 				}
 			}				
 			else
